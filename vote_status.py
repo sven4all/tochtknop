@@ -1,14 +1,57 @@
+import time
 
 class Status:
     def __init__(self, redis):
         self.redis = redis
 
+    def reset(self):
+        pipe = self.redis.pipeline()
+        pipe.delete("vote")
+        pipe.delete("last_time_voted")
+        pipe.delete("vote_start_time")
+        pipe.delete("vote_participants")
+        pipe.execute()
+        
+
+    def check_status(self):
+        result = self.get_status()
+        if result == None:
+            return {
+                "status": "no_tocht_in_progress"
+            }
+        elif result["progress_of_tocht"] >= 1:
+            self.reset()
+            return {
+                "status": "proposal_is_getocht",
+                "details": result
+            }
+        elif time.time() - result["time_last_vote"] > 7:
+            self.reset()
+            return {
+                "status": "tocht_is_resetted",
+                "details": result
+            }
+        return {
+            "status": "toch_in_progress",
+            "details": result
+        }
+
     def get_status(self):
-        initial_number_of_votes = 500
-        status = self.redis.get("vote")
-        if not status:
-            return 0
-        status = int(status)
-        if status <= 0:
-            return 0
-        return min(status / initial_number_of_votes, 1)
+        pipe = self.redis.pipeline()
+        pipe.get("vote")
+        pipe.scard("vote_participants")
+        pipe.get("total_times_voted")
+        pipe.get("last_time_voted")
+        pipe.get("vote_start_time")
+        result = pipe.execute()
+           
+        number_of_votes_needed = 50 + 50 * result[1]
+        if not result[0]:
+            return None
+        status = float(result[0])
+        return {
+            "progress_of_tocht": round(min(status / number_of_votes_needed, 1), 3),
+            "total_number_of_votes": int(result[2]),
+            "time_vote_started": round(float(result[4]), 3),
+            "time_last_vote": round(float(result[3]), 3)
+        }
