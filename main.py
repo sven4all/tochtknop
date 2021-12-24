@@ -1,6 +1,7 @@
 from typing import Optional, Awaitable, List
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.routing import run_endpoint_function
+from fastapi.middleware.cors import CORSMiddleware
 import vote
 import vote_status
 import redis
@@ -8,9 +9,23 @@ import connection_manager
 import time
 import asyncio
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 voteInstance = vote.Vote(r)
 statusInstance = vote_status.Status(r)
 

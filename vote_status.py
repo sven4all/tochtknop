@@ -32,7 +32,7 @@ class Status:
                 "details": result
             }
         return {
-            "status": "toch_in_progress",
+            "status": "tocht_in_progress",
             "details": result
         }
 
