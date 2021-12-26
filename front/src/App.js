@@ -12,7 +12,7 @@ function App() {
 
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/status/ws");
+    const ws = new WebSocket("ws://tochten.njn.nl/api/status/ws");
     ws.onmessage = function (event) {
       const json = JSON.parse(event.data);
       try {
@@ -48,9 +48,9 @@ function App() {
       }
       
       {tochtState != "no_tocht_in_progress" &&
-          <TochtKnop text="Stop de tocht!" url="http://localhost:8000/vote?opinion=false"></TochtKnop>
+          <TochtKnop text="Stop de tocht!" url="https://tochten.njn.nl/vote?opinion=false"></TochtKnop>
       }
-      <TochtKnop text="Tocht!" url="http://localhost:8000/vote?opinion=true"></TochtKnop>      
+      <TochtKnop text="Tocht!" url="http://tochten.njn.nl/vote?opinion=true"></TochtKnop>      
     </div>
   );
 }
