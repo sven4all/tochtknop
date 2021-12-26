@@ -53,7 +53,7 @@ class Status:
         pipe.get("vote_start_time")
         result = pipe.execute()
            
-        number_of_votes_needed = 10 + 10 * result[2]
+        number_of_votes_needed = 200 + 25 * result[2]
         if result[0] != None and time.time() - float(result[0]) < 10:
             return {"last_time_tocht_completed": float(result[0])}
         if not result[1]:

@@ -25,9 +25,9 @@ class Vote:
 
             local vote_start_time = tonumber(redis.call("GET", "vote_start_time"))
             local delta_time = ARGV[1] - vote_start_time
-            local vote_value = 1 + 0.0000717774 * delta_time^1.6
-            if delta_time > 600 then
-                vote_value = 3
+            local vote_value = 1 + 0.0000225 * delta_time^2
+            if vote_value >= 5 then
+                vote_value = 5
             end
             redis.call("SET", "last_time_voted", ARGV[1])
             redis.call("INCR", "total_times_voted")
