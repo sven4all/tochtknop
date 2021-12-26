@@ -48,9 +48,9 @@ function App() {
       }
       
       {tochtState != "no_tocht_in_progress" &&
-          <TochtKnop text="Stop de tocht!" url="https://tochten.njn.nl/vote?opinion=false"></TochtKnop>
+          <TochtKnop text="Stop de tocht!" url="https://tochten.njn.nl/api/vote?opinion=false"></TochtKnop>
       }
-      <TochtKnop text="Tocht!" url="https://tochten.njn.nl/vote?opinion=true"></TochtKnop>      
+      <TochtKnop text="Tocht!" url="https://tochten.njn.nl/api/vote?opinion=true"></TochtKnop>      
     </div>
   );
 }
