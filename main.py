@@ -39,8 +39,8 @@ def cast_vote(opinion: Optional[bool], request: Request):
 
 @app.get("/status")
 def status():
-    result = statusInstance.get_status()
-    return {"progress_of_tocht": result}
+    result = statusInstance.check_status()
+    return result
 
 @app.websocket("/status/ws")
 async def status(websocket: WebSocket):

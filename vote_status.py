@@ -4,23 +4,30 @@ class Status:
     def __init__(self, redis):
         self.redis = redis
 
-    def reset(self):
+    def reset(self, is_getocht = False):
         pipe = self.redis.pipeline()
         pipe.delete("vote")
         pipe.delete("last_time_voted")
         pipe.delete("vote_start_time")
         pipe.delete("vote_participants")
+        if (is_getocht):
+            pipe.set("last_time_tocht_completed", time.time())
         pipe.execute()
         
 
     def check_status(self):
         result = self.get_status()
+        print(result)
         if result == None:
             return {
                 "status": "no_tocht_in_progress"
             }
+        elif "last_time_tocht_completed" in result:
+            return {
+                "status": "proposal_is_getocht"
+            }
         elif result["progress_of_tocht"] >= 1:
-            self.reset()
+            self.reset(is_getocht=True)
             return {
                 "status": "proposal_is_getocht",
                 "details": result
@@ -38,6 +45,7 @@ class Status:
 
     def get_status(self):
         pipe = self.redis.pipeline()
+        pipe.get("last_time_tocht_completed")
         pipe.get("vote")
         pipe.scard("vote_participants")
         pipe.get("total_times_voted")
@@ -45,13 +53,15 @@ class Status:
         pipe.get("vote_start_time")
         result = pipe.execute()
            
-        number_of_votes_needed = 50 + 50 * result[1]
-        if not result[0]:
+        number_of_votes_needed = 10 + 10 * result[2]
+        if result[0] != None and time.time() - float(result[0]) < 10:
+            return {"last_time_tocht_completed": float(result[0])}
+        if not result[1]:
             return None
-        status = float(result[0])
+        status = float(result[1])
         return {
             "progress_of_tocht": round(min(status / number_of_votes_needed, 1), 3),
-            "total_number_of_votes": int(result[2]),
-            "time_vote_started": round(float(result[4]), 3),
-            "time_last_vote": round(float(result[3]), 3)
+            "total_number_of_votes": int(result[3]),
+            "time_vote_started": round(float(result[5]), 3),
+            "time_last_vote": round(float(result[4]), 3)
         }

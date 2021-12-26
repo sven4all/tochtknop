@@ -15,6 +15,10 @@ class Vote:
 
     def yes_vote(self, ip):
         lua_script = """ 
+            if redis.call("EXISTS", "last_time_tocht_completed") == 1 and tonumber(ARGV[1]) - tonumber(redis.call("GET", "last_time_tocht_completed")) < 10 then
+                return false
+            end
+ 
             if redis.call("EXISTS", "vote_start_time") == 0 then
                 redis.call("SET", "vote_start_time", ARGV[1])
             end
@@ -29,10 +33,14 @@ class Vote:
             redis.call("INCR", "total_times_voted")
             redis.call("SADD", "vote_participants", ARGV[2])
             redis.call("INCRBYFLOAT", "vote", vote_value)
+            return true
             """
         if self.yes_vote_redis == None:
             self.yes_vote_redis = self.redis.register_script(lua_script)
-        self.yes_vote_redis(args=[time.time(), ip])
+        result = self.yes_vote_redis(args=[time.time(), ip])
+        print(result)
+        if result != True: 
+            raise HTTPException(status_code=422, detail="Vote can't be started at this moment, wait for 10s.")
 
     def no_vote(self, ip):
         lua_script = """

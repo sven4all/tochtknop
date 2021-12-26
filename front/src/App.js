@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import './App.css';
 import ProgressBar from "./progress-bar.component";
 import TochtKnop from './TochtKnop';
+import VoorstelGetocht from "./VoorstelGetocht";
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
             setCompleted(json.details.progress_of_tocht * 100);
           } else if (json.status == "no_tocht_in_progress") {
             setCompleted(0);
+          } else if (json.status == "proposal_is_getocht") {
+
           }
         }
       } catch (err) {
@@ -37,7 +40,13 @@ function App() {
 
   return (
     <div className="App">
-      <ProgressBar bgcolor={"#6a1b9a"} completed={completed} />
+      {tochtState != "proposal_is_getocht" &&
+        <ProgressBar bgcolor={"#6a1b9a"} completed={completed} />
+      }
+      {tochtState == "proposal_is_getocht" &&
+        <VoorstelGetocht />
+      }
+      
       {tochtState != "no_tocht_in_progress" &&
           <TochtKnop text="Stop de tocht!" url="http://localhost:8000/vote?opinion=false"></TochtKnop>
       }
