@@ -12,7 +12,7 @@ function App() {
 
 
   useEffect(() => {
-    const ws = new WebSocket("ws://tochten.njn.nl/api/status/ws");
+    const ws = new WebSocket("wss://tochten.njn.nl/api/status/ws");
     ws.onmessage = function (event) {
       const json = JSON.parse(event.data);
       try {
