@@ -17,7 +17,6 @@ class Status:
 
     def check_status(self):
         result = self.get_status()
-        print(result)
         if result == None:
             return {
                 "status": "no_tocht_in_progress"
