@@ -39,6 +39,7 @@ manager = connection_manager.ConnectionManager()
 
 @app.get("/vote", status_code=204)
 @limiter.limit("100 / 10 second")
+@limiter.limit("15 / second")
 def cast_vote(opinion: Optional[bool], request: Request):
     ip = request.client.host
     voteInstance.process_vote(opinion, ip)
