@@ -9,7 +9,6 @@ import vote
 import vote_status
 import redis
 import connection_manager
-import aioredis
 import asyncio
 
 origins = [
