@@ -12,21 +12,27 @@ const VoorstelGetocht = (props) => {
         "https://media.giphy.com/media/3o85xyAKL2r2scDenK/giphy.gif",
         "https://media.giphy.com/media/IB9foBA4PVkKA/giphy.gif",
         "https://media.giphy.com/media/Sux3kje9eOx1e/giphy.gif",
-        "https://media.giphy.com/media/Swx36wwSsU49HAnIhC/giphy.gif"
-
+        "https://media.giphy.com/media/Swx36wwSsU49HAnIhC/giphy.gif",
+        "https://c.tenor.com/dIYElE0kJHQAAAAd/wee-ship.gif",
+        "https://c.tenor.com/muR1wtqZbGsAAAAC/rainbow-vomit.gif",
+        "https://c.tenor.com/5p3sBDEuk2gAAAAM/bugs-bug.gif",
+        "https://c.tenor.com/Gttq2GShLvMAAAAM/bugs-buggingout.gif"
     ]
 
 
     useEffect(
         () => {
-            console.log(gifs);
-            console.log(gifs.length);
-            console.log(Math.floor(Math.random() * gifs.length));
             setActiveGif(gifs[Math.floor(Math.random() * gifs.length)]);
-            console.log(activeGif);
         }
     );
     
+    const containerStyles = {
+        height: '70vh',
+        margin: 'auto',
+        marginTop: 50,
+        marginBottom: 50,
+      }
+
   
     // const containerStyles = {
     //   height: 20,
@@ -52,7 +58,7 @@ const VoorstelGetocht = (props) => {
     // }
   
     return (
-    <div>
+    <div style={containerStyles}>
         <img src={activeGif}></img>
         <p>
             Voorstel is getocht! Probeer het volgend jaar opnieuw.

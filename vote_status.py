@@ -52,15 +52,19 @@ class Status:
         pipe.get("vote_start_time")
         result = pipe.execute()
            
-        number_of_votes_needed = 200 + 25 * result[2]
+        number_of_votes_needed = 75 + 75 * result[2]
         if result[0] != None and time.time() - float(result[0]) < 10:
             return {"last_time_tocht_completed": float(result[0])}
         if not result[1]:
             return None
         status = float(result[1])
+        number_of_vote_participants = result[2]
+        if number_of_vote_participants == None:
+            number_of_vote_participants = 0 
         return {
             "progress_of_tocht": round(min(status / number_of_votes_needed, 1), 3),
             "total_number_of_votes": int(result[3]),
             "time_vote_started": round(float(result[5]), 3),
-            "time_last_vote": round(float(result[4]), 3)
+            "time_last_vote": round(float(result[4]), 3),
+            "number_of_vote_participants": int(number_of_vote_participants)
         }

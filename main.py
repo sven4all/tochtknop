@@ -66,12 +66,16 @@ class BackgroundRunner:
 
     async def run_forever(self):
         while True:
-            print("sleep")
-            await asyncio.sleep(0.1)
-            print("check_status")
-            result = statusInstance.check_status()
-            print("broadcast message")
-            await manager.broadcast(result)
+            try:
+                print("sleep")
+                await asyncio.sleep(0.1)
+                print("check_status")
+                result = statusInstance.check_status()
+                print("broadcast message")
+                await manager.broadcast(result)
+            except Exception as e:
+                print("there was something wrong")
+                print(e)
 
 runner = BackgroundRunner(manager)
 

@@ -1,11 +1,12 @@
 
 
 import React from "react";
-
+import ReactDOM from 'react-dom';
+import Button from '@mui/material/Button';
 
 
 const TochtKnop = (props) => {
-    const { text, url } = props;
+    const { text, url, type_button} = props;
 
     function vote(url) {
       console.log(url);
@@ -13,34 +14,14 @@ const TochtKnop = (props) => {
       
     }
     
-  
-    // const containerStyles = {
-    //   height: 20,
-    //   width: '95%',
-    //   backgroundColor: "#e0e0de",
-    //   borderRadius: 50,
-    //   margin: 50
-    // }
-  
-    // const fillerStyles = {
-    //   height: '100%',
-    //   transition: 'width 0.1s ease-in-out',
-    //   width: `${completed}%`,
-    //   backgroundColor: bgcolor,
-    //   borderRadius: 'inherit',
-    //   textAlign: 'right'
-    // }
-  
-    // const labelStyles = {
-    //   padding: 5,
-    //   color: 'white',
-    //   fontWeight: 'bold'
-    // }
+    const containerStyles = {
+      margin: 10
+    }
   
     return (
-      <button onClick={() => vote(url)}>
+      <Button style={containerStyles} onClick={() => vote(url)} variant={type_button}>
         {text}
-      </button>
+      </Button>
     );
   };
   
