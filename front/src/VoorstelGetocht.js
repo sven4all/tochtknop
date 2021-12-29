@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import useSound from 'use-sound';
+
+import sadTrombone from './sad_trombone.mp3';
 
 const VoorstelGetocht = (props) => {
     const { text, url } = props;
     const [ activeGif, setActiveGif ] = useState("https://media.giphy.com/media/Yf93ak2fe5ems/giphy.gif");
+    const [play] = useSound(sadTrombone);
 
     const gifs = [
         "https://media.giphy.com/media/Yf93ak2fe5ems/giphy.gif",
@@ -23,6 +27,7 @@ const VoorstelGetocht = (props) => {
     useEffect(
         () => {
             setActiveGif(gifs[Math.floor(Math.random() * gifs.length)]);
+            play();
         }
     );
     
@@ -58,7 +63,7 @@ const VoorstelGetocht = (props) => {
     // }
   
     return (
-    <div style={containerStyles}>
+    <div style={containerStyles} onClick={play}>
         <img src={activeGif}></img>
         <p>
             Voorstel is getocht! Probeer het volgend jaar opnieuw.
