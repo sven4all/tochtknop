@@ -18,7 +18,7 @@ const Statistieken = (props) => {
       <div style={containerStyles}>
        Statistieken voor nerds
        <p>
-       Aantal clicks dit congres: {clicks} - {resetSeconds}s tot afbreken toch - deze tocht duurt al {durationTocht} - {participants} deelnemers aan deze tocht
+       Aantal clicks dit congres: {clicks} - {resetSeconds}s tot afbreken toch - deze tocht duurt al {durationTocht} - {participants} deelnemer(s) aan deze tocht
         </p>
       </div>
     );

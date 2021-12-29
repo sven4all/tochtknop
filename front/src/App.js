@@ -62,7 +62,7 @@ function App() {
       <TochtKnop text="Tocht!" url="https://tochten.njn.nl/api/vote?opinion=true" type_button="contained"></TochtKnop>    
       
       {tochtState == "tocht_in_progress" &&
-          <Statistieken clicks={numberOfClicks}  durationTocht={durationOfTocht} resetSeconds={durationUntilReset}, participants > </Statistieken>
+          <Statistieken clicks={numberOfClicks}  durationTocht={durationOfTocht} resetSeconds={durationUntilReset} participants={numberOfParticipants} > </Statistieken>
       }
     </div>
   );
