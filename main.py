@@ -1,5 +1,5 @@
 from typing import Optional, Awaitable, List
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Depends
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -10,11 +10,13 @@ import vote_status
 import redis
 import connection_manager
 import asyncio
+import os
 
 origins = [
     "http://localhost:3000",
     "http://localhost:8080",
 ]
+
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -48,6 +50,14 @@ def cast_vote(opinion: Optional[bool], request: Request):
 def status():
     result = statusInstance.check_status()
     return result
+
+@app.get("/reset")
+def reset(secret: Optional[str]):
+    storedSecret = os.getenv("TOCHT_SECRET")
+    if storedSecret == None or secret != storedSecret:
+        raise HTTPException(status_code=401, detail="You are not authenticated to reset vote.")
+    statusInstance.reset(is_getocht=False)
+    return
 
 @app.websocket("/status/ws")
 async def status(websocket: WebSocket):
